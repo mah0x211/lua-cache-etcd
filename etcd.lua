@@ -29,6 +29,7 @@
 
 -- modules
 local typeof = require('util.typeof');
+local toStatusLineName = require('httpconsts.status').toStatusLineName;
 local Cache = require('cache');
 local Etcd = require('etcd.luasocket');
 
@@ -44,9 +45,14 @@ local function request( cli, method, failval, ... )
     -- timeout
     elseif res.status == 408 then
         return failval, '408 request timed out';
+    elseif typeof.table( res.body ) then
+        return failval, ('%d %s'):format( res.body.errorCode, res.body.message );
     end
     
-    return failval, ('%d %s'):format( res.body.errorCode, res.body.message );
+    return failval, ('%d %s'):format( 
+        res.status, 
+        toStatusLineName( res.status ) or '' 
+    );
 end
 
 -- class

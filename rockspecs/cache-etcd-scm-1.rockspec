@@ -11,6 +11,7 @@ description = {
 }
 dependencies = {
     "lua >= 5.1",
+    "httpconsts >= 1.0-1",
     "util >= 1.2.0",
     "halo >= 1.1",
     "etcd >= 0.11.0",
