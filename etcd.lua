@@ -50,10 +50,10 @@ local function request( cli, method, failval, ... )
 end
 
 -- class
-local CacheEtcd = require('halo').class.CacheEtcd;
+local Etcd = require('halo').class.Etcd;
 
 
-function CacheEtcd:init( opts )
+function Etcd:init( opts )
     local ttl, cli, err;
     
     if typeof.table( opts ) and typeof.finite( opts.ttl ) then
@@ -70,19 +70,19 @@ function CacheEtcd:init( opts )
 end
 
 
-function CacheEtcd:set( key, val, ttl )
+function Etcd:set( key, val, ttl )
     return request( protected(self).cli, 'set', false, key, val, ttl );
 end
 
 
-function CacheEtcd:get( key )
+function Etcd:get( key )
     return request( protected(self).cli, 'get', nil, key );
 end
 
 
-function CacheEtcd:delete( key )
+function Etcd:delete( key )
     return request( protected(self).cli, 'delete', false, key );
 end
 
 
-return CacheEtcd.exports;
+return Etcd.exports;
