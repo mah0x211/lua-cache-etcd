@@ -31,7 +31,6 @@
 local typeof = require('util.typeof');
 local toStatusLineName = require('httpconsts.status').toStatusLineName;
 local Cache = require('cache');
-local Etcd = require('etcd.luasocket');
 
 -- private
 local function request( cli, method, failval, ... )
@@ -58,19 +57,24 @@ end
 -- class
 local Etcd = require('halo').class.Etcd;
 
+Etcd:property {
+    protected = {
+        cli = require('etcd.luasocket')
+    }
+};
 
 function Etcd:init( opts )
+    local own = protected(self);
     local ttl, cli, err;
     
     if typeof.table( opts ) and typeof.finite( opts.ttl ) then
         ttl = opts.ttl > 0 and opts.ttl or 0;
     end
     
-    cli, err = Etcd.new( opts );
+    own.cli, err = own.cli.new( opts );
     if err then
         return nil, err;
     end
-    protected(self).cli = cli;
     
     return Cache.new( self, ttl );
 end
