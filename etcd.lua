@@ -81,7 +81,9 @@ end
 
 
 function Etcd:set( key, val, ttl )
-    return request( protected(self).cli, 'set', false, key, val, ttl );
+    return request( 
+        protected(self).cli, 'set', false, key, val, ttl > 0 and ttl or -1
+    );
 end
 
 
