@@ -41,6 +41,9 @@ local function request( cli, method, failval, ... )
     -- success
     elseif res.status == 200 or res.status == 201 then
         return failval == false or res.body.node.value;
+    -- not found
+    elseif res.status == 404 then
+        return failval;
     -- timeout
     elseif res.status == 408 then
         return failval, '408 request timed out';
