@@ -65,11 +65,8 @@ Etcd:property {
 
 function Etcd:init( opts )
     local own = protected(self);
-    local ttl, cli, err;
-    
-    if typeof.table( opts ) and typeof.finite( opts.ttl ) then
-        ttl = opts.ttl > 0 and opts.ttl or 0;
-    end
+    local ttl = typeof.table( opts ) and opts.ttl or nil;
+    local cli, err;
     
     own.cli, err = own.cli.new( opts );
     if err then
